@@ -1,5 +1,6 @@
 const express = require('express')
 const mongodb = require('mongodb')
+const { ObjectId } = require('mongodb/lib/bson')
 const router = express.Router()
 
 //Get
@@ -7,6 +8,15 @@ router.get('/', async (req, res) => {
     const elections = await loadElectionsCollection()
     res.send(await elections.find({}).toArray())
 })
+router.put('/:id/:Canadent_Number', async (req, res) => {
+    const elections = await loadElectionsCollection()
+    //console.log(req.params.Canadent_Number)
+    if(req.params.Canadent_Number == 1){
+    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { Vote1 : 1 }}, {upsert: true})
+    }else 
+    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { Vote2 : 1 }}, {upsert: true})
+})
+
 
 
 //Add
@@ -14,7 +24,15 @@ router.post('/', async (req, res) => {
     const elections = await loadElectionsCollection()
     await elections.insertOne({
         text: req.body.text,
-        createdAt: new Date()
+        club: req.body.club,
+        Candidate1FirstName: req.body.Candidate1FirstName,
+        Candidate1LastName: req.body.Candidate1LastName,
+        Candidate2FirstName: req.body.Candidate2FirstName,
+        Candidate2LastName: req.body.Candidate2LastName,
+        Poisition: req.body.Poisition,
+        createdAt: new Date(),
+        Vote1: req.body.Vote1,
+        Vote2: req.body.Vote2
     })
     res.status(201).send()
 })
