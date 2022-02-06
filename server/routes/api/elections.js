@@ -19,6 +19,22 @@ router.post('/', async (req, res) => {
     res.status(201).send()
 })
 
+//Update 
+router.put('/:id/:candidateId', async (req, res) => {
+    const elections = await loadElectionsCollection()
+    const vote = `Vote${req.params.candidateId}`
+    await elections.updateOne(
+        { _id: new mongodb.ObjectId(req.params.id) },
+        { $inc: { [vote]: 1 } }
+    )
+
+    // await elections.insertOne({
+    //     text: req.body.text,
+    //     createdAt: new Date()
+    // })
+    res.status(201).send()
+})
+
 //Delete
 router.delete('/:id', async (req, res) => {
     const elections = await loadElectionsCollection()
