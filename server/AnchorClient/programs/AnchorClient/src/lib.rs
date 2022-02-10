@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("Gu7xYmGthCWx6ZYSHhFy6AzDh1qEEmaKdQjMrZQxmYWD");
+declare_id!("8dRXv5ZruSWHJCskoTpKPcmrqgXhJMzQtQtYTtqBYX6c");
 
 #[program]
 pub mod anchor_client {
@@ -10,6 +10,7 @@ pub mod anchor_client {
         let base_account = &mut ctx.accounts.base_account;
         // Initialize total_gifs.
         base_account.total_votes = 0;
+        base_account.votes = [].to_vec();
         Ok(())
     }
 
@@ -33,7 +34,7 @@ pub mod anchor_client {
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
-    #[account(init, payer = user, space = 9000)]
+    #[account(init_if_needed, payer = user, space = 9000)]
     pub base_account: Account<'info, BaseAccount>,
     #[account(mut)]
     pub user: Signer<'info>,

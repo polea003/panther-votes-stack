@@ -1,0 +1,17 @@
+[programs.localnet]
+anchor_client = "8dRXv5ZruSWHJCskoTpKPcmrqgXhJMzQtQtYTtqBYX6c"
+
+[programs.devnet]
+anchor_client = "8dRXv5ZruSWHJCskoTpKPcmrqgXhJMzQtQtYTtqBYX6c"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "devnet"
+wallet = "/Users/PAT/.config/solana/id.json"
+
+[scripts]
+# test = "node ./tests/AnchorClient.js"
+test = "node ./tests/AnchorDeploy.js"
+

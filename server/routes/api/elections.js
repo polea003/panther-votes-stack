@@ -1,6 +1,7 @@
 const express = require('express')
 const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
+const anchorClient = require('../../AnchorClient/tests/AnchorDeploy.js')
 const router = express.Router()
 
 //Get
@@ -12,6 +13,7 @@ router.put('/:id/:Canadent_Number', async (req, res) => {
     const elections = await loadElectionsCollection()
     console.log(req.params.Canadent_Number)
     number = req.params.Canadent_Number
+    await anchorClient.addVote(parseInt(number))
     await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
 })
 
