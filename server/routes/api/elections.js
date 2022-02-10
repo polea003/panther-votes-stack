@@ -10,11 +10,10 @@ router.get('/', async (req, res) => {
 })
 router.put('/:id/:Canadent_Number', async (req, res) => {
     const elections = await loadElectionsCollection()
-    //console.log(req.params.Canadent_Number)
-    if(req.params.Canadent_Number == 1){
-    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { Vote1 : 1 }}, {upsert: true})
-    }else 
-    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { Vote2 : 1 }}, {upsert: true})
+    console.log(req.params.Canadent_Number)
+    number = req.params.Canadent_Number
+    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
+    res.status(200).send()
 })
 
 
@@ -32,7 +31,11 @@ router.post('/', async (req, res) => {
         Poisition: req.body.Poisition,
         createdAt: new Date(),
         Vote1: req.body.Vote1,
-        Vote2: req.body.Vote2
+        Vote2: req.body.Vote2,
+        FirstName: req.body.FirstName,
+        LastName : req.body.LastName,
+        NumberOfCandidates: req.body.NumberOfCandidates,
+        Vote: req.body.Vote
     })
     res.status(201).send()
 })
