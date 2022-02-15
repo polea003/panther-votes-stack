@@ -9,6 +9,13 @@ router.get('/', async (req, res) => {
     const elections = await loadElectionsCollection()
     res.send(await elections.find({}).toArray())
 })
+
+//Get all votes from blockchain
+router.get('/solana', async (req, res) => {
+    res.send(await anchorClient.getVotes())
+})
+
+
 router.put('/:id/:Canadent_Number', async (req, res) => {
     const elections = await loadElectionsCollection()
     console.log(req.params.Canadent_Number)
