@@ -38,7 +38,7 @@ const main = async() => {
   // let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
 
   // Call add_vote!
-  await program.rpc.addVote(7, {
+  await program.rpc.addVote(7, '_test-353456345634563456', {
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,
@@ -64,7 +64,7 @@ const runMain = async () => {
 // runMain(); 
 
 
-exports.addVote = async (selection) => {
+exports.addVote = async (selection, electionId) => {
   console.log("🚀 addVote Called...");
 
   const provider = anchor.Provider.env()
@@ -78,7 +78,7 @@ exports.addVote = async (selection) => {
   const baseAccount = Keypair.fromSecretKey(secret)
 
   // Call add_vote!
-  await program.rpc.addVote(selection, {
+  await program.rpc.addVote(selection, electionId, {
     accounts: {
       baseAccount: baseAccount.publicKey,
       user: provider.wallet.publicKey,

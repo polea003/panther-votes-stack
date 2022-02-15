@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("8dRXv5ZruSWHJCskoTpKPcmrqgXhJMzQtQtYTtqBYX6c");
+declare_id!("zhLKxt9TWC3d2yeB8jGCbLBuAcs19KbBNKs4NkuMUqt");
 
 #[program]
 pub mod anchor_client {
@@ -14,7 +14,7 @@ pub mod anchor_client {
         Ok(())
     }
 
-    pub fn add_vote(ctx: Context<AddVote>, selection: u8 ) -> ProgramResult {
+    pub fn add_vote(ctx: Context<AddVote>, selection: u8, election_id: String ) -> ProgramResult {
         // Get a reference to the account and increment total_gifs.
         let base_account = &mut ctx.accounts.base_account;
         let user = &mut ctx.accounts.user;
@@ -23,6 +23,7 @@ pub mod anchor_client {
         let vote = VoteStruct {
           selection: selection,
           user_address: *user.to_account_info().key,
+          election_id: election_id,
         };
     
         // Add it to the votes vector.
@@ -54,6 +55,7 @@ pub struct AddVote<'info> {
 pub struct VoteStruct {
     pub selection: u8,
     pub user_address: Pubkey,
+    pub election_id: String,
 }
 
 // Tell Solana what we want to store on this account.

@@ -13,7 +13,7 @@ router.put('/:id/:Canadent_Number', async (req, res) => {
     const elections = await loadElectionsCollection()
     console.log(req.params.Canadent_Number)
     number = req.params.Canadent_Number
-    await anchorClient.addVote(parseInt(number))
+    await anchorClient.addVote(parseInt(number), req.params.id)
     await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
     res.status(200).send()
 })
