@@ -1,0 +1,99 @@
+{
+  "version": "0.1.0",
+  "name": "anchor_client",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "addVote",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "selection",
+          "type": "u8"
+        },
+        {
+          "name": "electionId",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "BaseAccount",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "totalVotes",
+            "type": "u64"
+          },
+          {
+            "name": "votes",
+            "type": {
+              "vec": {
+                "defined": "VoteStruct"
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "VoteStruct",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "selection",
+            "type": "u8"
+          },
+          {
+            "name": "userAddress",
+            "type": "publicKey"
+          },
+          {
+            "name": "electionId",
+            "type": "string"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "address": "zhLKxt9TWC3d2yeB8jGCbLBuAcs19KbBNKs4NkuMUqt"
+  }
+}
