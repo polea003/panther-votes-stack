@@ -4,7 +4,7 @@ const { Keypair, SystemProgram } = anchor.web3;
 // const { Connection, PublicKey, clusterApiUrl } = require('@solana/web3.js');
 const { PublicKey } = require('@solana/web3.js');
 const baseKP = require('../baseAccountKeypair.json')
-const idl = require('../target/idl/anchor_client.json');
+const idl = require('./anchor_client.json');
 require('dotenv').config();
 // const payer = require("/Users/PAT/.config/solana/id.json");
 

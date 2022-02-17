@@ -12,7 +12,8 @@ STEPS FOR A FRESH SPIN UP OF A NEW VOTING DAPP:
 "metadata": {
     "address": "8dRXv5ZruSWHJCskoTpKPcmrqgXhJMzQtQtYTtqBYX6c"
 }
-10. run "anchor test" to run AnchorDeploy.js. Make sure runMain() isn't commented out so the program runs
-    and a base account is initialized. For now, it defaults to the local wallet to pay for deployment.
+10. copy new idl to /tests
+11. run "anchor test" to run AnchorDeploy.js. Make sure runMain() isn't commented out so the program runs
+    and a base account is initialized. For now, it defaults to the local wallet to pay for deployment so make sure it has SOL.
     After intializing the base account with "anchor test" comment out runMain() so it does not run again.
-11. Spin up backend as usual with "npm run dev". Server is now writing to blockchain.
+12. Spin up backend as usual with "npm run dev". Server is now writing to blockchain.

@@ -44,7 +44,9 @@ router.post('/', async (req, res) => {
         FirstName: req.body.FirstName,
         LastName : req.body.LastName,
         NumberOfCandidates: req.body.NumberOfCandidates,
-        Vote: req.body.Vote
+        Vote: req.body.Vote,
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
     })
     res.status(201).send()
 })
