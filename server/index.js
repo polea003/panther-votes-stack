@@ -1,9 +1,17 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
+const colors = require('colors')
+const dotenv = require('dotenv').config()
+const { errorHandler } = require('./middleware/errorMiddleware')
+const connectDB = require('./config/db')
+
+connectDB()
 
 const app = express();
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
 //Middleware
 app.use(bodyParser.json())
 app.use(cors())
