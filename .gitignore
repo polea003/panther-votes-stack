@@ -1,2 +1,5 @@
 /web-app
 node_modules
+# .env
+# /server/AnchorClient/baseAccountKeypair.json
+# /server/AnchorClient/serverWalletKeypair.json

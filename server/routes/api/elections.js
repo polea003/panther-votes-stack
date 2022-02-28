@@ -1,6 +1,7 @@
 const express = require('express')
 const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
+const anchorClient = require('../../AnchorClient/tests/AnchorDeploy.js')
 const router = express.Router()
 
 //Get
@@ -8,10 +9,18 @@ router.get('/', async (req, res) => {
     const elections = await loadElectionsCollection()
     res.send(await elections.find({}).toArray())
 })
+
+//Get all votes from blockchain
+router.get('/solana', async (req, res) => {
+    res.send(await anchorClient.getVotes())
+})
+
+
 router.put('/:id/:Canadent_Number', async (req, res) => {
     const elections = await loadElectionsCollection()
     console.log(req.params.Canadent_Number)
     number = req.params.Canadent_Number
+    await anchorClient.addVote(parseInt(number), req.params.id)
     await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
     res.status(200).send()
 })
@@ -35,7 +44,9 @@ router.post('/', async (req, res) => {
         FirstName: req.body.FirstName,
         LastName : req.body.LastName,
         NumberOfCandidates: req.body.NumberOfCandidates,
-        Vote: req.body.Vote
+        Vote: req.body.Vote,
+        startTime: req.body.startTime,
+        endTime: req.body.endTime,
     })
     res.status(201).send()
 })
