@@ -22,6 +22,10 @@ app.use('/api/elections', elections)
 app.use('/api/goals', require('./routes/api/goalRoutes'))
 app.use('/api/users', require('./routes/api/userRoutes'))
 
+const Oauth = require('./routes/api/Oauth')
+app.use('/api/Oauth', Oauth)
+
+
 
 const port = process.env.PORT || 5000
 
