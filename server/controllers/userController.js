@@ -89,12 +89,13 @@ const loginUser = asyncHandler(async(req, res) =>{
 //@access Private
 const GetMe = asyncHandler(async(req, res) =>{
     const {_id , name, email} = await User.findById(req.user.id)
-
-    
+    console.log(req.user)
+    req.Authorization = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMGZlMTdiOTQyZmIwYzFhMDY5YWRmMyIsImlhdCI6MTY0NTIwNzkzMSwiZXhwIjoxNjQ3Nzk5OTMxfQ.gpO0axyl_yAH0Osf43udZYwf4FrwHm7j3x7iOqO9fQk'
     res.status(200).json({
         id: _id,
         name,
         email,
+        
 
     })})
 
