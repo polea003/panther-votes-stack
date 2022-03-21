@@ -5,8 +5,14 @@ const User = require('../Models/userModel')
 const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const express = require('express')
+const mongoose = require("mongoose");
 const router = express.Router()
-
+const multer = require('multer');
+const {GridFsStorage} = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const methodOverride = require('method-override');
+const crypto = require('crypto');
+const { readSync } = require('fs')
 
 
 
@@ -28,8 +34,9 @@ const registerUser =  asyncHandler(async(req, res) =>{
     //check if user exists
     const userExists = await User.findOne({email})
     if(userExists){
-        res.status(400)
-        throw new Error('User already exists')
+       res.status(400)
+       console.log("Email already exist")
+       throw new Error('User already exists')
     }
 
     // hash password
@@ -64,7 +71,7 @@ res.json({message: 'Register User'})})
 //@access Public
 const loginUser = asyncHandler(async(req, res) =>{
     const {email, password} = req.body
-
+    console.log("HEYYY")
     // check for user email
     const user = await User.findOne({email})
 
@@ -106,10 +113,46 @@ const generateToken = (id) => {
     })
 
 }
+const mongoURI = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+
+// Create mongo connection
+const conn = mongoose.createConnection(mongoURI);
+let gfs;
+conn.once('open', () => {
+    // Init stream
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
+  });
+  
+  // Create storage engine
+  const storage = new GridFsStorage({
+    url: mongoURI,
+    file: (req, file) => {
+      return new Promise((resolve, reject) => {
+        crypto.randomBytes(16, (err, buf) => {
+          if (err) {
+            return reject(err);
+          }
+          const filename = buf.toString('hex') + path.extname(file.originalname);
+          const fileInfo = {
+            filename: filename,
+            bucketName: 'uploads'
+          };
+          resolve(fileInfo);
+        });
+      });
+    }
+  });
+const upload = multer({ storage });
+const Upload = asyncHandler(async(req, res) =>{
+console.log("hello")
+upload.single('file')
+res.json({file: req.file})
+})
 
 module.exports = {
     registerUser,
     loginUser,
     GetMe,
-
+    Upload,
 }

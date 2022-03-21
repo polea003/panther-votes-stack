@@ -56,7 +56,7 @@ passport.deserializeUser(function(id, done){
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
-    callbackURL: "http://localhost:5000/api/auth/google/callback"
+    callbackURL: "http://localhost:8080/auth/google/election-Dashboard"
     },
     function(accessToken, refreshToken, profile, cb) {
     console.log(profile);
@@ -77,11 +77,11 @@ router.get("/auth/google",
         scope: ["profile"] }
 ));
 
-router.get("/auth/google/secrets", 
+router.get("api/auth/google/callback", 
     passport.authenticate("google", { failureRedirect: "/login" }),
     function(req, res) {
     // Successful authentication, redirect home.
-    res.redirect("/secrets");
+    res.redirect("/election-Dashboard");
     });
 
 

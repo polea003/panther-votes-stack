@@ -1,10 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const router = express.Router()
 const cors = require('cors')
 const colors = require('colors')
 const dotenv = require('dotenv').config()
 const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
+const initRoutes = require("./routes/api/PicRoute");
 
 connectDB()
 
@@ -21,7 +23,7 @@ app.use('/api/elections', elections)
 
 app.use('/api/goals', require('./routes/api/goalRoutes'))
 app.use('/api/users', require('./routes/api/userRoutes'))
-
+app.use('/api/upload', require('./routes/api/PicRoute'))
 const Oauth = require('./routes/api/Oauth')
 app.use('/api/Oauth', Oauth)
 
