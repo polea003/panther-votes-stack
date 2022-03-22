@@ -8,7 +8,6 @@ const uploadController = require("../../controllers/upload");
   router.post("/upload", uploadController.uploadFiles);
   router.get("/files", uploadController.getListFiles);
   router.get("/files/:name", uploadController.download);
-  router.get("/verify", uploadController.facialVerify);
 
  
   module.exports = router

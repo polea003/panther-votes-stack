@@ -6,14 +6,14 @@ var storage = new GridFsStorage({
   url: 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   options: { useNewUrlParser: true, useUnifiedTopology: true },
   file: (req, file) => {
-    const match = ["image/png", "image/jpeg"];
+    const match = ["image/png", "image/jpeg", "image/PNG"];
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}${file.originalname}`;
+      const filename = `${file.originalname}`;
       return filename;
     }
     return {
       bucketName: dbConfig.imgBucket,
-      filename: `${Date.now()}${file.originalname}`
+      filename: `${file.originalname}`
     };
   }
 });
