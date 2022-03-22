@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {registerUser, loginUser, GetMe,} = require('../../controllers/userController')
+const {registerUser, loginUser, GetMe} = require('../../controllers/userController')
 const homeController = require("../../controllers/home");
 const uploadController = require("../../controllers/upload");
 const {protect} = require('../../middleware/authMiddleware')

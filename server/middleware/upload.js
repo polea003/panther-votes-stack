@@ -8,12 +8,12 @@ var storage = new GridFsStorage({
   file: (req, file) => {
     const match = ["image/png", "image/jpeg"];
     if (match.indexOf(file.mimetype) === -1) {
-      const filename = `${Date.now()}-bezkoder-${file.originalname}`;
+      const filename = `${Date.now()}${file.originalname}`;
       return filename;
     }
     return {
       bucketName: dbConfig.imgBucket,
-      filename: `${Date.now()}-bezkoder-${file.originalname}`
+      filename: `${Date.now()}${file.originalname}`
     };
   }
 });

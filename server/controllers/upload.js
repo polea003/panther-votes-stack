@@ -4,9 +4,9 @@ const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
+const mongodb = require('mongodb')
 const mongoClient = new MongoClient(url);
 const uploadFiles = async (req, res) => {
-    console.log("HELLLLLLLLLLO")
   try {
     await upload(req, res);
     console.log(req.file);
@@ -15,6 +15,13 @@ const uploadFiles = async (req, res) => {
         message: "You must select a file.",
       });
     }
+    const db = await mongodb.MongoClient.connect
+    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+        useNewUrlParser: true
+    })
+    db.aggregate([
+       { $addFields : {name: 1}}
+    ])
     return res.send({
       message: "File has been uploaded.",
     });
@@ -26,7 +33,7 @@ const uploadFiles = async (req, res) => {
   }
 };
 const getListFiles = async (req, res) => {
-    console.log("hELLO")
+    //console.log("hELLO")
   try {
     await mongoClient.connect();
     const database = mongoClient.db('myFirstDatabase');
@@ -49,7 +56,7 @@ const getListFiles = async (req, res) => {
         url: baseUrl + doc.filename,
       });
     });
-    console.log(fileInfos)
+    //console.log(fileInfos)
 
     return res.status(200).send(fileInfos);
   } catch (error) {

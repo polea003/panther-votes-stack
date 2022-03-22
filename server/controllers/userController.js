@@ -13,6 +13,7 @@ const Grid = require('gridfs-stream');
 const methodOverride = require('method-override');
 const crypto = require('crypto');
 const { readSync } = require('fs')
+const { getMaxListeners } = require('process')
 
 
 
@@ -21,9 +22,10 @@ const { readSync } = require('fs')
 //@access Public
 const registerUser =  asyncHandler(async(req, res) =>{
     
-    const {name, email, password} = req.body
+    const {name, email, password, PictureName} = req.body
 
     console.log(req.body)
+    console.log(PictureName)
     
     if(!name || !email || !password){
         res.status(400)
@@ -47,8 +49,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
     const user = await User.create({
         name,
         email,
-        password: hashedPassword
-
+        password: hashedPassword,
+        PictureName
     })
 
     if(user){
@@ -65,6 +67,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
     
 
 res.json({message: 'Register User'})})
+
+
 
 //@desc Authenticate user
 //@route Post/api/users/login
@@ -150,9 +154,11 @@ upload.single('file')
 res.json({file: req.file})
 })
 
+
 module.exports = {
     registerUser,
     loginUser,
     GetMe,
     Upload,
+    
 }
