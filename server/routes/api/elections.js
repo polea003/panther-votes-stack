@@ -22,7 +22,7 @@ router.put('/:id/:Canadent_Number', async (req, res) => {
     number = req.params.Canadent_Number
     await anchorClient.addVote(parseInt(number), req.params.id)
     await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
-    res.status(200).send()
+    res.status(200).send() 
 })
 
 
