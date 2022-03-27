@@ -43,6 +43,7 @@ router.post('/', async (req, res) => {
         Vote2: req.body.Vote2,
         FirstName: req.body.FirstName,
         LastName : req.body.LastName,
+        FullName : req.body.FullName,
         NumberOfCandidates: req.body.NumberOfCandidates,
         Vote: req.body.Vote,
         startTime: req.body.startTime,
