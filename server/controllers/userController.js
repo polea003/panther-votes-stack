@@ -33,10 +33,17 @@ const user = await loadUserCollection()
 //console.log(user)
 await user.updateOne( {_id :  mongodb.ObjectId(Uid)},{$push: { ElectionsVoted  : {EID} }}, )
 
-//console.log(Uid + EID)
-  //const user = await User.findOne({Uid})
-  //console.log("here ->>>>>>>" + user.id)
-  //user.updateOne({$push: {ElectionsVoted: EID}})
+})
+
+const UpdateE = asyncHandler(async(req,res) => {
+  const id = req.params
+  //const all = await loadUserCollection()
+  const user = await User.findById({_id :  mongodb.ObjectId(id)})
+  //user.ElectionsVoted
+  //console.log(user.ElectionsVoted)
+  res.json({
+    ElectionsVoted: user.ElectionsVoted
+  })
 })
 //@desc register new user
 //@route Post/api/users
@@ -96,7 +103,6 @@ res.json({message: 'Register User'})})
 //@access Public
 const loginUser = asyncHandler(async(req, res) =>{
     const {email, password} = req.body
-    console.log("HEYYY")
     // check for user email
     const user = await User.findOne({email})
 
@@ -116,7 +122,20 @@ const loginUser = asyncHandler(async(req, res) =>{
     }
 })
    
+const reload = asyncHandler(async(req,res) => {
+const email = req
+console.log("here ->>>" + req)
+const user = await User.findOne({email})
+res.json({
+  _id: user.id,
+  name: user.name,
+  email: user.email,
+  token: user.token,
+  ElectionsVoted: user.ElectionsVoted
 
+          })
+
+})
 //@desc Get user data
 //@route GET /api/users/me
 //@access Private
@@ -189,6 +208,8 @@ module.exports = {
     loginUser,
     GetMe,
     Upload,
-    SubmitElection
+    SubmitElection,
+    reload,
+    UpdateE
     
 }
