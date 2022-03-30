@@ -14,6 +14,11 @@ const userScheme = mongoose.Schema({
         type:String,
         required: [true, 'Please add a Password'],
     },
+    ElectionsVoted: {
+        type: Array,
+
+    },
+    
    
 
 },

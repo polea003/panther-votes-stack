@@ -30,11 +30,6 @@
           "name": "baseAccount",
           "isMut": true,
           "isSigner": false
-        },
-        {
-          "name": "user",
-          "isMut": true,
-          "isSigner": true
         }
       ],
       "args": [
@@ -43,7 +38,7 @@
           "type": "u8"
         },
         {
-          "name": "electionId",
+          "name": "userId",
           "type": "string"
         }
       ]
@@ -82,18 +77,11 @@
             "type": "u8"
           },
           {
-            "name": "userAddress",
-            "type": "publicKey"
-          },
-          {
-            "name": "electionId",
+            "name": "userId",
             "type": "string"
           }
         ]
       }
     }
-  ],
-  "metadata": {
-    "address": "C6prGwn7TkbxgiFTNftyXvvGCb2hrsnijXbNyuuYUCyW"
-  }
+  ]
 }

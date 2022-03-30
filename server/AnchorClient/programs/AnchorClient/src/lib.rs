@@ -1,6 +1,6 @@
 use anchor_lang::prelude::*;
 
-declare_id!("C6prGwn7TkbxgiFTNftyXvvGCb2hrsnijXbNyuuYUCyW");
+declare_id!("Do8GVhpPWUvK2HPpPHbZDPTwKJwYjAE7WE5QtEEGAojD");
 
 #[program]
 pub mod anchor_client {
@@ -14,16 +14,16 @@ pub mod anchor_client {
         Ok(())
     }
 
-    pub fn add_vote(ctx: Context<AddVote>, selection: u8, election_id: String ) -> ProgramResult {
+    pub fn add_vote(ctx: Context<AddVote>, selection: u8, user_id: String ) -> ProgramResult {
         // Get a reference to the account and increment total_gifs.
         let base_account = &mut ctx.accounts.base_account;
-        let user = &mut ctx.accounts.user;
+        // let user = &mut ctx.accounts.user;
 
         // Build the struct.
         let vote = VoteStruct {
           selection: selection,
-          user_address: *user.to_account_info().key,
-          election_id: election_id,
+        //   user_address: *user.to_account_info().key,
+          user_id: user_id,
         };
     
         // Add it to the votes vector.
@@ -46,16 +46,16 @@ pub struct Initialize<'info> {
 pub struct AddVote<'info> {
   #[account(mut)]
   pub base_account: Account<'info, BaseAccount>,
-  #[account(mut)]
-  pub user: Signer<'info>,
+//   #[account(mut)]
+//   pub user: Signer<'info>,
 }
 
 // Create a custom struct for us to work with.
 #[derive(Debug, Clone, AnchorSerialize, AnchorDeserialize)]
 pub struct VoteStruct {
     pub selection: u8,
-    pub user_address: Pubkey,
-    pub election_id: String,
+    // pub user_address: Pubkey,
+    pub user_id: String,
 }
 
 // Tell Solana what we want to store on this account.
