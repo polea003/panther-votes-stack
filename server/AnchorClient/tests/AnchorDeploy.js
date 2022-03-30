@@ -6,7 +6,30 @@ const { PublicKey } = require('@solana/web3.js');
 const baseKP = require('../baseAccountKeypair.json')
 const idl = require('./anchor_client.json');
 require('dotenv').config();
-// const payer = require("/Users/PAT/.config/solana/id.json");
+const progID = require('../target/deploy/anchor_client-keypair.json')
+const { binary_to_base58 } = require('base58-js')
+const mongodb = require('mongodb')
+const { ObjectId } = require('mongodb/lib/bson')
+const fs = require('fs');
+
+// Below added for cleanup after anchor build
+const keyToStr = (key) => {
+    const arr = Object.values(key)
+    const secret = new Uint8Array(arr)
+    const accountKeyPair = Keypair.fromSecretKey(secret)
+    const pubKeyStr = binary_to_base58(accountKeyPair._keypair.publicKey)
+    return pubKeyStr
+}
+
+async function loadKeypairCollection() {
+  const client = await mongodb.MongoClient.connect
+  ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+  })
+
+  return client.db('panther-db').collection('keypairs')
+}
+
 
 const main = async() => {
   console.log("🚀 Starting test...");
@@ -15,8 +38,6 @@ const main = async() => {
   anchor.setProvider(provider);
   const program = anchor.workspace.AnchorClient;
 
-  // const programID = new PublicKey(idl.metadata.address);
-  // const program = new Program(idl, programID, provider);
 
   const arr = Object.values(baseKP._keypair.secretKey)
   const secret = new Uint8Array(arr)
@@ -33,27 +54,32 @@ const main = async() => {
   });
 
   console.log("📝 Your cd .. signature", tx);
-
-  // Fetch data from the account.
-  // let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-
-  // Call add_vote!
-  await program.rpc.addVote(7, '_test-353456345634563456', {
-    accounts: {
-      baseAccount: baseAccount.publicKey,
-      user: provider.wallet.publicKey,
-    },
-  });
-
-  // Get the account again to see what changed.
-  let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-  console.log('👀 Vote Count', account.totalVotes.toString())
-  console.log('👀 Votes', account.votes)
 }
 
 const runMain = async () => {
   try {
+
+
     await main();
+
+    // put in database
+    baseAccountPubkKeyStr = keyToStr(baseKP._keypair.secretKey)
+    programPubKeyStr = keyToStr(progID)
+    const keypairs = await loadKeypairCollection()
+    await keypairs.insertOne({
+        baseAccount: baseAccountPubkKeyStr,
+        progId: programPubKeyStr,
+        inUse: false
+    })
+
+    //rename
+    console.log('base account:')
+    console.log(keyToStr(baseKP._keypair.secretKey))
+    console.log('program id:')
+    console.log(keyToStr(progID))
+    fs.rename('baseAccountKeypair.json', `./baseAccounts/${baseAccountPubkKeyStr}.json`, () => {})
+    fs.rename('./target/deploy/anchor_client-keypair.json', `./target/deploy/${programPubKeyStr}.json`, () => {})
+
     process.exit(0);
   } catch (error) {
     console.error(error);
@@ -61,53 +87,4 @@ const runMain = async () => {
   }
 };
 
-// runMain(); 
-
-
-exports.addVote = async (selection, electionId) => {
-  console.log("🚀 addVote Called...");
-
-  const provider = anchor.Provider.env()
-  anchor.setProvider(provider);
-
-  const programID = new PublicKey(idl.metadata.address);
-  const program = new Program(idl, programID, provider);
-
-  const arr = Object.values(baseKP._keypair.secretKey)
-  const secret = new Uint8Array(arr)
-  const baseAccount = Keypair.fromSecretKey(secret)
-
-  // Call add_vote!
-  await program.rpc.addVote(selection, electionId, {
-    accounts: {
-      baseAccount: baseAccount.publicKey,
-      user: provider.wallet.publicKey,
-    },
-  });
-  let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-  console.log('👀 Vote Count', account.totalVotes.toString())
-  console.log('👀 Votes', account.votes)
-}
-
- exports.getVotes = async () => {
-  try {
-    console.log("🚀 getVotes Called...");
-
-    const provider = anchor.Provider.env()
-    anchor.setProvider(provider);
-
-    const programID = new PublicKey(idl.metadata.address);
-    const program = new Program(idl, programID, provider);
-
-    const arr = Object.values(baseKP._keypair.secretKey)
-    const secret = new Uint8Array(arr)
-    const baseAccount = Keypair.fromSecretKey(secret)
-    const account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-    
-    return account.votes
-
-  } catch (err) {
-    console.log("Error in getElection: ", error)
-    return null;
-  }
-} 
+runMain();

@@ -17,15 +17,46 @@ const { getMaxListeners } = require('process')
 
 
 
+//router.put('/:Uid/:Eid', async (req, res) => {
+ // const user = await User.findOne({Uid})
+  //console.log(req.params.Uid)
+ // number = req.params.Canadent_Number
+ // await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.id)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
+ // res.status(200).send()
+//})
+
+const SubmitElection = asyncHandler(async(req, res) =>{
+
+//console.log("->>>>>>>>>>>>>" + req.params.Uid)
+const {Uid, EID} = req.params
+const user = await loadUserCollection()
+//console.log(user)
+await user.updateOne( {_id :  mongodb.ObjectId(Uid)},{$push: { ElectionsVoted  : {EID} }}, )
+res.json({
+  ElectionsVoted: user.ElectionsVoted
+})
+
+})
+
+const UpdateE = asyncHandler(async(req,res) => {
+  const id = req.params
+  //const all = await loadUserCollection()
+  const user = await User.findById({_id :  mongodb.ObjectId(id)})
+  //user.ElectionsVoted
+  //console.log(user.ElectionsVoted)
+  res.json({
+    ElectionsVoted: user.ElectionsVoted
+  })
+})
 //@desc register new user
 //@route Post/api/users
 //@access Public
 const registerUser =  asyncHandler(async(req, res) =>{
     
-    const {name, email, password, PictureName} = req.body
+    const {name, email, password, ElectionsVoted} = req.body
 
-    console.log(req.body)
-    console.log(PictureName)
+    //console.log(req.body)
+    //console.log(ElectionsVoted)
     
     if(!name || !email || !password){
         res.status(400)
@@ -50,7 +81,7 @@ const registerUser =  asyncHandler(async(req, res) =>{
         name,
         email,
         password: hashedPassword,
-        PictureName
+        ElectionsVoted
     })
 
     if(user){
@@ -75,7 +106,6 @@ res.json({message: 'Register User'})})
 //@access Public
 const loginUser = asyncHandler(async(req, res) =>{
     const {email, password} = req.body
-    console.log("HEYYY")
     // check for user email
     const user = await User.findOne({email})
 
@@ -85,6 +115,7 @@ const loginUser = asyncHandler(async(req, res) =>{
     name: user.name,
     email: user.email,
     token: generateToken(user._id),
+    ElectionsVoted: user.ElectionsVoted
 
             })
     }
@@ -94,7 +125,20 @@ const loginUser = asyncHandler(async(req, res) =>{
     }
 })
    
+const reload = asyncHandler(async(req,res) => {
+const email = req
+console.log("here ->>>" + req)
+const user = await User.findOne({email})
+res.json({
+  _id: user.id,
+  name: user.name,
+  email: user.email,
+  token: user.token,
+  ElectionsVoted: user.ElectionsVoted
 
+          })
+
+})
 //@desc Get user data
 //@route GET /api/users/me
 //@access Private
@@ -153,12 +197,22 @@ console.log("hello")
 upload.single('file')
 res.json({file: req.file})
 })
+async function loadUserCollection() {
+  const client = await mongodb.MongoClient.connect
+  ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+  })
 
+  return client.db('panther-db').collection('users')
+}
 
 module.exports = {
     registerUser,
     loginUser,
     GetMe,
     Upload,
+    SubmitElection,
+    reload,
+    UpdateE
     
 }
