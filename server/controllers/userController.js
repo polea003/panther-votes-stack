@@ -32,6 +32,9 @@ const {Uid, EID} = req.params
 const user = await loadUserCollection()
 //console.log(user)
 await user.updateOne( {_id :  mongodb.ObjectId(Uid)},{$push: { ElectionsVoted  : {EID} }}, )
+res.json({
+  ElectionsVoted: user.ElectionsVoted
+})
 
 })
 
