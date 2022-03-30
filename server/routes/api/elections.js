@@ -57,10 +57,12 @@ router.post('/', async (req, res) => {
             baseAccount: keypair.baseAccount,
             programId: keypair.progId
         },
+        FullName : req.body.FullName,
         NumberOfCandidates: req.body.NumberOfCandidates,
         Vote: req.body.Vote,
         startTime: req.body.startTime,
         endTime: req.body.endTime,
+        userProfile: req.body.userProfile,
     })
     await keypairs.updateOne({ _id: keypair._id }, { $set: { inUse: true }})
     res.status(201).send()

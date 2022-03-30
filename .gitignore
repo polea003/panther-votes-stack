@@ -1,5 +1,6 @@
 /web-app
 node_modules
+/voting-frontend
 # .env
 # /server/AnchorClient/baseAccountKeypair.json
 # /server/AnchorClient/serverWalletKeypair.json

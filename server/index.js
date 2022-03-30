@@ -7,7 +7,8 @@ const dotenv = require('dotenv').config()
 const { errorHandler } = require('./middleware/errorMiddleware')
 const connectDB = require('./config/db')
 const initRoutes = require("./routes/api/PicRoute");
-
+const passport = require('passport')
+const cookieSession = require('cookie-session')
 connectDB()
 
 const app = express();
@@ -16,6 +17,14 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 //Middleware
 app.use(bodyParser.json())
+app.use(cookieSession({
+name: 'mysession',
+keys: ['vueauthrandomkey'],
+maxAge: 24 * 60 * 60 * 1000
+
+}))
+app.use(passport.initialize())
+app.use(passport.session())
 app.use(cors())
 
 // Add Access Control Allow Origin headers
