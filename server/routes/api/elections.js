@@ -48,7 +48,7 @@ router.post('/', async (req, res) => {
         Vote: req.body.Vote,
         startTime: req.body.startTime,
         endTime: req.body.endTime,
-        userProfile: req.body.userProfile,
+        UserProfile: req.body.UserProfile,
     })
     res.status(201).send()
 })
