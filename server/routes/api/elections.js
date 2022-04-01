@@ -3,11 +3,14 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
+const elections = loadElectionsCollection()
+const keypairsVar = loadKeypairCollection()
 
 //Get
 router.get('/', async (req, res) => {
-    const elections = await loadElectionsCollection()
-    res.send(await elections.find({keys: {$exists: true}}).toArray())
+    //const elections = await loadElectionsCollection()
+    const election = await elections
+    res.send(await election.find({keys: {$exists: true}}).toArray())
 })
 
 //Get all votes from blockchain
@@ -16,20 +19,22 @@ router.get('/solana/', async (req, res) => {
 })
 
 router.get('/solana/:electionId', async (req, res) => {
-    const elections = await loadElectionsCollection()
-    const election = await elections.findOne({_id: new mongodb.ObjectId(req.params.electionId)})
-    res.send(await anchorClient.getVotes(election.keys))
+    //const elections = await loadElectionsCollection()
+    const election = await elections
+    const ele = await election.findOne({_id: new mongodb.ObjectId(req.params.electionId)})
+    res.send(await anchorClient.getVotes(ele.keys))
 })
 
 
 router.put('/:electionid/:Canadent_Number/:userid', async (req, res) => {
-    const elections = await loadElectionsCollection()
-    const election = await elections.findOne({ _id: new mongodb.ObjectId(req.params.electionid)})
+   // const elections = await loadElectionsCollection()
+   const election = await elections
+    const ele = await election.findOne({ _id: new mongodb.ObjectId(req.params.electionid)})
     console.log(req.params.Canadent_Number)
     number = req.params.Canadent_Number
     console.log(req.params.userid)
-    await anchorClient.addVote(parseInt(number), req.params.userid, election.keys)
-    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.electionid)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
+    await anchorClient.addVote(parseInt(number), req.params.userid, ele.keys)
+    await election.updateOne( {_id :  new mongodb.ObjectId(req.params.electionid)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
     res.status(200).send()
 })
 
@@ -37,10 +42,12 @@ router.put('/:electionid/:Canadent_Number/:userid', async (req, res) => {
 
 //Add
 router.post('/', async (req, res) => {
-    const elections = await loadElectionsCollection()
-    const keypairs = await loadKeypairCollection()
+    //const elections = await loadElectionsCollection()
+    const election = await elections
+    //const keypairs = await loadKeypairCollection()
+    const keypairs = await keypairsVar
     const keypair = await keypairs.findOne({ inUse: false })
-    await elections.insertOne({
+    await election.insertOne({
         text: req.body.text,
         club: req.body.club,
         Candidate1FirstName: req.body.Candidate1FirstName,
@@ -62,7 +69,7 @@ router.post('/', async (req, res) => {
         Vote: req.body.Vote,
         startTime: req.body.startTime,
         endTime: req.body.endTime,
-        userProfile: req.body.userProfile,
+        UserProfile: req.body.UserProfile,
     })
     await keypairs.updateOne({ _id: keypair._id }, { $set: { inUse: true }})
     res.status(201).send()
@@ -70,8 +77,9 @@ router.post('/', async (req, res) => {
 
 //Delete
 router.delete('/:id', async (req, res) => {
-    const elections = await loadElectionsCollection()
-    await elections.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
+    //const elections = await loadElectionsCollection()
+   const  election = await elections
+    await election.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
     res.status(200).send()
 })
 

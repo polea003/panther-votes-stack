@@ -9,8 +9,10 @@ const connectDB = require('./config/db')
 const initRoutes = require("./routes/api/PicRoute");
 const passport = require('passport')
 const cookieSession = require('cookie-session')
+var db = require('./Mongo')
 connectDB()
-
+ 
+//db.establishConnection();
 const app = express();
 
 app.use(express.json())
