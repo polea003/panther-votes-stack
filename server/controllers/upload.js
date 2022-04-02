@@ -4,7 +4,8 @@ const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
-const mongodb = require('mongodb')
+const mongodb = require('mongodb');
+const { db } = require("../Models/goalModel");
 const mongoClient = new MongoClient(url);
 const uploadFiles = async (req, res) => {
   try {
@@ -22,15 +23,18 @@ const uploadFiles = async (req, res) => {
     db.aggregate([
        { $addFields : {name: 1}}
     ])
+    db.close
     return res.send({
       message: "File has been uploaded.",
     });
+    
   } catch (error) {
     console.log(error);
     return res.send({
       message: "Error when trying upload image: ${error}",
     });
   }
+ 
 };
 const getListFiles = async (req, res) => {
     //console.log("hELLO")
@@ -57,7 +61,7 @@ const getListFiles = async (req, res) => {
       });
     });
     //console.log(fileInfos)
-
+    database.close
     return res.status(200).send(fileInfos);
   } catch (error) {
 

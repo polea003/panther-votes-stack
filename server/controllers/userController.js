@@ -162,42 +162,6 @@ const generateToken = (id) => {
     })
 
 }
-const mongoURI = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
-
-// Create mongo connection
-const conn = mongoose.createConnection(mongoURI);
-let gfs;
-conn.once('open', () => {
-    // Init stream
-    gfs = Grid(conn.db, mongoose.mongo);
-    gfs.collection('uploads');
-  });
-  
-  // Create storage engine
-  const storage = new GridFsStorage({
-    url: mongoURI,
-    file: (req, file) => {
-      return new Promise((resolve, reject) => {
-        crypto.randomBytes(16, (err, buf) => {
-          if (err) {
-            return reject(err);
-          }
-          const filename = buf.toString('hex') + path.extname(file.originalname);
-          const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads'
-          };
-          resolve(fileInfo);
-        });
-      });
-    }
-  });
-const upload = multer({ storage });
-const Upload = asyncHandler(async(req, res) =>{
-console.log("hello")
-upload.single('file')
-res.json({file: req.file})
-})
 async function loadUserCollection() {
   const client = await mongodb.MongoClient.connect
   ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
@@ -211,7 +175,6 @@ module.exports = {
     registerUser,
     loginUser,
     GetMe,
-    Upload,
     SubmitElection,
     reload,
     UpdateE

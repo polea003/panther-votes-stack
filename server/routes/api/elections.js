@@ -6,7 +6,9 @@ const router = express.Router()
 const elections = loadElectionsCollection()
 const keypairsVar = loadKeypairCollection()
 
+
 //Get
+
 router.get('/', async (req, res) => {
     //const elections = await loadElectionsCollection()
     const election = await elections
