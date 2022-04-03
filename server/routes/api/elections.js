@@ -3,6 +3,7 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
+//const connectDB = require('../../config/db')
 
 //Get
 router.get('/', async (req, res) => {
@@ -76,7 +77,10 @@ router.delete('/:id', async (req, res) => {
 })
 
 async function loadElectionsCollection() {
-    const client = await mongodb.MongoClient.connect
+    /*connectDB('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+        useNewUrlParser: true
+    })*/
+   const client = await mongodb.MongoClient.connect
     ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })
@@ -86,10 +90,12 @@ async function loadElectionsCollection() {
 
 async function loadKeypairCollection() {
     const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    ('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })
-  
+  /*connectDB('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    useNewUrlParser: true
+})*/
     return client.db('panther-db').collection('keypairs')
   }
 
