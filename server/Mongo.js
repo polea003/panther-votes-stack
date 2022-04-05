@@ -20,7 +20,7 @@ establishConnection = function(callback){
 
 
 }
-console.log("mongo::: "+ this.establishConnection)
+
 
 function getconnection(){
     return connection
