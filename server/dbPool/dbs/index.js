@@ -20,8 +20,8 @@ module.exports = async function () {
 }
 */
 module.exports = async function () {
-  let database = await connect(ELEC_URI)
-
+  let database = await Promise.all([connect(ELEC_URI)])
+  //console.log((await database.collections('elections').then()).find({}))
   return {
     electionDB: database,
   }

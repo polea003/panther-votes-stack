@@ -3,7 +3,10 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
-const appjs = require('../../app')
+//const db = require('../../config/dbPool')
+//const appjs = require('../../app')
+//console.log(appjs)
+//console.log(req.app.locals.dbs)
 //const workPlease = appjs.dbs 
 //const connectDB = require('../../config/db')
 /*const app = express()
@@ -19,6 +22,17 @@ initializeDatabases().then(dbs => {
   console.error(err)
   process.exit(1)
 })*/
+
+var MongoClient = require('mongodb').MongoClient;
+var db;
+
+// Initialize connection once (http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect)
+MongoClient.connect("mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", function(err, database) {
+  if(err) throw err;
+
+  db = database;
+})
+
 
 //Get
 router.get('/', async (req, res) => {
@@ -95,23 +109,23 @@ async function loadElectionsCollection() {
     /*connectDB('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })*/
-   const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+   /*const client = await mongodb.MongoClient.connect
+    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority', {
         useNewUrlParser: true
-    })
+    })*/
 
-    return client.db('panther-db').collection('elections')
+    return db.db('panther-db').collection('elections')
 }
 
 async function loadKeypairCollection() {
-    const client = await mongodb.MongoClient.connect
+    /*const client = await mongodb.MongoClient.connect
     ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
-    })
+    })*/
   /*connectDB('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true
 })*/
-    return client.db('panther-db').collection('keypairs')
+    return db.db('panther-db').collection('keypairs')
   }
 
 module.exports = router

@@ -1,29 +1,26 @@
 /** request routing logic */
 module.exports = function (app, dbs) {
 
-    app.get('/database', (req, res) => {
-        console.log('hello!')
-        dbs.electionDB.db('panther-db').collection('elections').find({}).toArray((err, docs) => {
+    //console.log('hello!')
+   //console.log(dbs.electionDB.collection('elections').find({}).toArray())
+
+    app.get('/electionDB', (req, res) => {
+        console.log('hellFUCKINo!')
+        dbs.electionDB.collection('elections').find({}).toArray((err, docs) => {
+        //dbs.electionDB.db('panther-db').collection('elections').find({}).toArray((err, docs) => {
+            console.log('HELLO')
             if (err) {
                 console.log(err)
                 res.error(err)
             } else {
                 res.json(docs)
-                console.log(docs)
+                //console.log(dbs.electionDB.collection('panther-db').find({}).toArray())
+
+                console.log('hello!')
             }
         })
     })
-
-    /*app.get('/keyDB', (req, res) => {
-        dbs.keyDB.collection('test').find({}).toArray((err, docs) => {
-            if (err) {
-                console.log(err)
-                res.error(err)
-            } else {
-                res.json(docs)
-            }
-        })
-    })*/
-
+  
+    //console.log(app)
     return app
 }
