@@ -3,6 +3,7 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
+//const db = require('../../dbPool/dbs')
 //const db = require('../../config/dbPool')
 //const appjs = require('../../app')
 //console.log(appjs)
@@ -23,16 +24,24 @@ initializeDatabases().then(dbs => {
   process.exit(1)
 })*/
 
+//http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect
 var MongoClient = require('mongodb').MongoClient;
 var db;
+const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
+var options ={maxPoolSize: 100 }
 
-// Initialize connection once (http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect)
-MongoClient.connect("mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", function(err, database) {
+// Initialize connection once 
+MongoClient.connect(url, options, function(err, database){
   if(err) throw err;
 
-  db = database;
+    db = database;
+    //coll = db.collection('elections');
+    poolSize = 10
+    //app.listen(3000);
+    //console.log('Listening on port 3000');
+    console.log('Connected!...maybe election.js pool')
 })
-
+//https://blog.mlab.com/2013/11/deep-dive-into-connection-pooling/
 
 //Get
 router.get('/', async (req, res) => {

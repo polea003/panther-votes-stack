@@ -1,11 +1,25 @@
 const upload = require("../middleware/upload");
 const dbConfig = require("../config/db2");
-const MongoClient = require("mongodb").MongoClient;
+//const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
-const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+//const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
-const mongodb = require('mongodb')
-const mongoClient = new MongoClient(url);
+//const mongodb = require('mongodb')
+//const mongoClient = new MongoClient(url);
+
+var MongoClient = require('mongodb').MongoClient;
+var db;
+const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
+var options ={maxPoolSize: 10, useNewUrlParser: true }
+
+// Initialize connection once 
+MongoClient.connect(url, options, function(err, database){
+  if(err) throw err;
+
+    db = database;
+    console.log('Connected!...maybe uploads.js pool')
+})
+
 const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
@@ -15,10 +29,10 @@ const uploadFiles = async (req, res) => {
         message: "You must select a file.",
       });
     }
-    const db = await mongodb.MongoClient.connect
+    /*const db = await mongodb.MongoClient.connect
     ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
-    })
+    })*/
     db.aggregate([
        { $addFields : {name: 1}}
     ])
