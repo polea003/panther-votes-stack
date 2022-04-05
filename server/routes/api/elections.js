@@ -3,7 +3,22 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
+const appjs = require('../../app')
+//const workPlease = appjs.dbs 
 //const connectDB = require('../../config/db')
+/*const app = express()
+
+const initializeDatabases = require('../../dbPool/dbs')
+const routes = require('../../dbPool/routes')
+
+initializeDatabases().then(dbs => {
+  // Initialize the application once database connections are ready.
+  routes(app, dbs).listen(3000, () => console.log('Listening on port 3000'))
+}).catch(err => {
+  console.error('Failed to make all database connections!')
+  console.error(err)
+  process.exit(1)
+})*/
 
 //Get
 router.get('/', async (req, res) => {
@@ -90,7 +105,7 @@ async function loadElectionsCollection() {
 
 async function loadKeypairCollection() {
     const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })
   /*connectDB('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
