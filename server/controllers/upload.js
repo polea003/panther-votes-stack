@@ -5,7 +5,6 @@ const GridFSBucket = require("mongodb").GridFSBucket;
 const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
 const mongodb = require('mongodb');
-const { db } = require("../Models/goalModel");
 const mongoClient = new MongoClient(url);
 const uploadFiles = async (req, res) => {
   try {
