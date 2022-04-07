@@ -12,6 +12,9 @@ MongoClient.connect("mongodb+srv://panther123:panther123@panther-db.gfe61.mongod
 })
 
 module.exports = db*/
+
+/** Standalone file, could not figure out how to link to app */
+/*
 var express = require('express');
 var mongodb = require('mongodb');
 var app = express();
@@ -44,3 +47,4 @@ app.get("/", function(req, res) {
     });
   });
 });
+*/

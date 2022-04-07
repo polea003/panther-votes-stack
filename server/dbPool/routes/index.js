@@ -1,4 +1,6 @@
 /** request routing logic */
+/* linked to app.js, couldn't figure out in time */
+/*
 module.exports = function (app, dbs) {
 
     //console.log('hello!')
@@ -24,3 +26,4 @@ module.exports = function (app, dbs) {
     //console.log(app)
     return app
 }
+*/

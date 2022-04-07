@@ -1,5 +1,8 @@
-/** main file that starts the app, whatever that means */
-const express = require('express')
+/** main file that starts the app, whatever that means 
+ * Works with dbPool/dbs ans db/routes
+ * commented out, can't figure out how to link to app, something with express
+*/
+/*const express = require('express')
 const app = express()
 
 const initializeDatabases = require('./dbPool/dbs') //electionDB
@@ -14,7 +17,7 @@ initializeDatabases().then(dbs => {
   console.error('Failed to make all database connections!')
   console.error(err)
   process.exit(1)
-})
+})*/
 
 
 //console.log(dbs)

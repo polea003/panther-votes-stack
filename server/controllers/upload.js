@@ -9,8 +9,8 @@ const baseUrl = "http://localhost:8080/files/";
 
 var MongoClient = require('mongodb').MongoClient;
 var db;
-const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
-var options ={maxPoolSize: 10, useNewUrlParser: true }
+const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
+var options ={maxPoolSize: 50, useNewUrlParser: true }
 
 // Initialize connection once 
 MongoClient.connect(url, options, function(err, database){
@@ -49,8 +49,8 @@ const uploadFiles = async (req, res) => {
 const getListFiles = async (req, res) => {
     //console.log("hELLO")
   try {
-    await mongoClient.connect();
-    const database = mongoClient.db('myFirstDatabase');
+    //await mongoClient.connect();
+    const database = db.db('myFirstDatabase');
 
     const images = database.collection('photos' + ".files");
 
@@ -83,8 +83,9 @@ const getListFiles = async (req, res) => {
 };
 const download = async (req, res) => {
   try {
-    await mongoClient.connect();
-    const database = mongoClient.db('myFirstDatabase');
+    //await mongoClient.connect();
+    //const database = mongoClient.db('myFirstDatabase');
+    const database = db.db('myFirstDatabase')
     const bucket = new GridFSBucket(database, {
       bucketName: "photos",
     });
