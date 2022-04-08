@@ -10,7 +10,7 @@ const baseUrl = "http://localhost:8080/files/";
 var MongoClient = require('mongodb').MongoClient;
 var db;
 const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-var options ={maxPoolSize: 50, useNewUrlParser: true }
+var options ={maxPoolSize: 100, useNewUrlParser: true }
 
 // Initialize connection once 
 MongoClient.connect(url, options, function(err, database){

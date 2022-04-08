@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 const elections = require('./routes/api/elections')
 app.use('/api/elections', elections)
 
-app.use('/api/goals', require('./routes/api/goalRoutes'))
+//app.use('/api/goals', require('./routes/api/goalRoutes'))
 app.use('/api/users', require('./routes/api/userRoutes'))
 app.use('/api/upload', require('./routes/api/PicRoute'))
 const Oauth = require('./routes/api/Oauth')
