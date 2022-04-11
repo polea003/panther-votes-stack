@@ -3,6 +3,31 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
+
+var mongoPool = require( '../../config/mongoPool' );
+/*var db = mongoPool.getDb();
+console.log(db)
+router.get('/', (req, res, next) => {  
+    db.collection('elections').find().toArray((err, results) => {
+        if (err) return console.log(err)
+            res.render('elections', {elections: results, title: "Elections"})
+    });
+});
+
+router.post('/', (req, res) => {
+  db.collection('elections').save(req.body, (err, result) => {
+    if (err) return console.log(err)
+    res.redirect('/elections')
+  })
+});*/
+
+/*const db = require('../../config/mongoPool').getDb()
+const electionCollection = db.db('panther-db').collection('elections')
+const keypairsCollection = db.db('panther-db').collection('keypairs')*/
+//var db = require('../../app')
+//var DB = db.getDB()
+
+
 //const db = require('../../dbPool/dbs')
 //const db = require('../../config/dbPool')
 //const appjs = require('../../app')
@@ -25,10 +50,12 @@ initializeDatabases().then(dbs => {
 })*/
 
 //http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect
+
+/*
 var MongoClient = require('mongodb').MongoClient;
 var db;
 const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
-var options ={maxPoolSize: 10 }
+const options ={maxPoolSize: 100 }
 
 // Initialize connection once 
 MongoClient.connect(url, options, function(err, database){
@@ -36,12 +63,12 @@ MongoClient.connect(url, options, function(err, database){
 
     db = database;
     //coll = db.collection('elections');
-    poolSize = 10
     //app.listen(3000);
     //console.log('Listening on port 3000');
     console.log('Connected!...maybe election.js pool')
 })
 //https://blog.mlab.com/2013/11/deep-dive-into-connection-pooling/
+*/
 
 //Get
 router.get('/', async (req, res) => {
@@ -122,8 +149,27 @@ async function loadElectionsCollection() {
     ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority', {
         useNewUrlParser: true
     })*/
+    /*router.get('/elections', (req, res) => {
+        db.get().db('panther-db').collection('elections').find({}).toArray()
+        .then((elections) => {
+                console.log('Elections:', elections);
+                return elections
+            });
+    });*/
+    /*var db = mongoPool.getDb();
+    console.log(db)
+    router.get('/', (req, res, next) => {  
+    db.collection('elections').find().toArray((err, results) => {
+        if (err) return console.log(err)
+            res.render('elections', {elections: results, title: "Elections"})
+            console.log(elections)
+    });
+});
+console.log(db.collection('elections'))
+    //console.log(elections)*/
+    //return db.db('panther-db').collection('elections')
+    return mongoPool.getElectionColl()
 
-    return db.db('panther-db').collection('elections')
 }
 
 async function loadKeypairCollection() {
@@ -134,7 +180,17 @@ async function loadKeypairCollection() {
   /*connectDB('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
     useNewUrlParser: true
 })*/
-    return db.db('panther-db').collection('keypairs')
+
+   /* router.get('/keypairs', (req, res) => {
+        db.get().db('panther-db').collection('keypairs').find({}).toArray()
+        .then((keypairs) => {
+            console.log('Keypairs:', keypairs);
+            return keypairs
+        });
+    });
+*/
+    return mongoPool.getKeypairsColl()
+    //return db.db('panther-db').collection('keypairs')
   }
 
 module.exports = router

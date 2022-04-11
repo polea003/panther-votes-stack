@@ -14,8 +14,11 @@ const methodOverride = require('method-override');
 const crypto = require('crypto');
 const { readSync } = require('fs')
 const { getMaxListeners } = require('process')
+let db = require('../config/mongoPool')
 
 //Local Pool
+
+/*
 var MongoClient = require('mongodb').MongoClient;
 var db;
 const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
@@ -27,7 +30,7 @@ MongoClient.connect(url, options, function(err, database){
 
     db = database;
     console.log('Connected!...maybe userController.js pool')
-})
+})*/
 
 //router.put('/:Uid/:Eid', async (req, res) => {
  // const user = await User.findOne({Uid})
@@ -211,7 +214,8 @@ res.json({file: req.file})
 })
 
 async function loadUserCollection() {
-  return db.db('panther-db').collection('users')
+  //return db.db('panther-db').collection('users')
+  return db.getUserColl()
 }
 
 module.exports = {
