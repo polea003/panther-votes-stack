@@ -1,8 +1,10 @@
 STEPS FOR A FRESH SPIN UP OF A NEW VOTING DAPP:
 
+*** see server/AnchorClient/createSolanaAccount.sh for streamlined process ***
+
 1. run createKeypair.js in anchor client to create base account keypair
-2. in terminal, run "solana-keygen new --outfile ./serverWalletKeypair.json"
-3. in terminal, run "solana-keygen pubkey ./serverWalletKeypair.json" to get wallet pubkey, then send it some SOL "solana airdrop 2 <pubkey>"
+2. in terminal, run "solana-keygen pubkey ./serverWalletKeypair.json" to get wallet pubkey, then send it some SOL "solana airdrop 2 <pubkey>"
+3. in terminal, run "solana-keygen new --outfile ./serverWalletKeypair.json"
 4. delete target/deploy/anchor_client-keypair.json if there
 5. run anchor build
 6. get public address of programId "solana address -k target/deploy/anchor_client-keypair.json" for programId
