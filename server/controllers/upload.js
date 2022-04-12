@@ -1,5 +1,7 @@
 const upload = require("../middleware/upload");
 const dbConfig = require("../config/db2");
+const express = require('express')
+const router = express.Router()
 //const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 //const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -110,4 +112,6 @@ module.exports = {
   uploadFiles,
   getListFiles,
   download,
+  router,
+
 };

@@ -68,6 +68,7 @@ mongo.connectToServer( function( err) {
 });
 */
 
+/*
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -82,28 +83,33 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-var mongoPool = require( './config/mongoPool' );
-mongoPool.connectToServer( function( err ) {
-  //app goes online once this callback occurs
-  /*var indexRouter = require('./routes/index');
-  var usersRouter = require('./routes/users');
-  var companiesRouter = require('./routes/companies');
-  var activitiesRouter = require('./routes/activities');
-  var registerRouter = require('./routes/register');*/  
-  var electionsRouter = require('../server/routes/api/elections'); 
+var mongoPool = require('./config/mongoPool');
 
-  /*app.use('/', indexRouter);
-  app.use('/users', usersRouter);
-  app.use('/companies', companiesRouter);
-  app.use('/activities', activitiesRouter);
-  app.use('/register', registerRouter); */ 
-  app.use('/elections', electionsRouter);  
+mongoPool.connectToServer(function (err) {
+  //app goes online once this callback occurs
+  //var indexRouter = require('./routes/index');
+  //var usersRouter = require('./routes/users');
+  //var companiesRouter = require('./routes/companies');
+  //var activitiesRouter = require('./routes/activities');
+  //var registerRouter = require('./routes/register');
+  var electionsRouter = require('../server/routes/api/elections');
+  var uploadRouter = require('../server/controllers/upload');
+  var userConRouter = require('../server/controllers/userController');
+  //app.use('/', indexRouter);
+  //app.use('/users', usersRouter);
+  //app.use('/companies', companiesRouter);
+  //app.use('/activities', activitiesRouter);
+  //app.use('/register', registerRouter); 
+  app.use('/elections', electionsRouter);
+  app.use('/upload', uploadRouter);
+  app.use('/userController', userConRouter);
   // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
+  console.log('connectToServer() called')
+  app.use(function (req, res, next) {
     next(createError(404));
   });
   // error handler
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
     res.status(err.status || 500);
@@ -113,3 +119,4 @@ mongoPool.connectToServer( function( err ) {
 });
 
 module.exports = app;
+*/

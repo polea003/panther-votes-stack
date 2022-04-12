@@ -35,6 +35,7 @@ module.exports = {
             myFirstDB = client.db('myFirstDatabase');
 
             console.log('mognoPool Conected!');
+            
             return callback(err);
         });
     },

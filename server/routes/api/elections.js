@@ -5,6 +5,24 @@ const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
 
 var mongoPool = require( '../../config/mongoPool' );
+var electionCollection; 
+var keypairsCollection;
+
+router.get('/elections', (req, res) => {
+	mongoPool.getElectionColl()
+	.then((elections) => {
+            console.log('Elections', elections);
+            electionCollection = elections;
+        });
+});
+
+router.get('/elections', (req, res) => {
+	mongoPool.getKeypairsColl()
+	.then((keypairs) => {
+            console.log('Keypairs', keypairs);
+            keypairsCollection = keypairs;
+        });
+});
 /*var db = mongoPool.getDb();
 console.log(db)
 router.get('/', (req, res, next) => {  
@@ -72,7 +90,7 @@ MongoClient.connect(url, options, function(err, database){
 
 //Get
 router.get('/', async (req, res) => {
-    const elections = await loadElectionsCollection()
+    const elections = await electionCollection
     res.send(await elections.find({keys: {$exists: true}}).toArray())
 })
 
@@ -168,7 +186,7 @@ async function loadElectionsCollection() {
 console.log(db.collection('elections'))
     //console.log(elections)*/
     //return db.db('panther-db').collection('elections')
-    return mongoPool.getElectionColl()
+    return electionCollection
 
 }
 
@@ -189,7 +207,7 @@ async function loadKeypairCollection() {
         });
     });
 */
-    return mongoPool.getKeypairsColl()
+    return keypairsCollection
     //return db.db('panther-db').collection('keypairs')
   }
 

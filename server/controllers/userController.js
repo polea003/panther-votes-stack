@@ -225,6 +225,7 @@ module.exports = {
     Upload,
     SubmitElection,
     reload,
-    UpdateE
+    UpdateE,
+    router
     
 }
