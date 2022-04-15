@@ -65,7 +65,7 @@ const UpdateE = asyncHandler(async(req,res) => {
 //@access Public
 const registerUser =  asyncHandler(async(req, res) =>{
     
-    const {name, email, password, ElectionsVoted} = req.body
+    const {name, email, password, ElectionsVoted, role} = req.body
 
     //console.log(req.body)
     //console.log(ElectionsVoted)
@@ -93,7 +93,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
         name,
         email,
         password: hashedPassword,
-        ElectionsVoted
+        ElectionsVoted,
+        role
     })
 
     if(user){
@@ -101,7 +102,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: generateToken(user._id),
+            role: user.role
         })}
     else{
         res.status(400)
@@ -127,8 +129,8 @@ const loginUser = asyncHandler(async(req, res) =>{
     name: user.name,
     email: user.email,
     token: generateToken(user._id),
-    ElectionsVoted: user.ElectionsVoted
-
+    ElectionsVoted: user.ElectionsVoted,
+    role: user.role
             })
     }
     else{
@@ -139,15 +141,14 @@ const loginUser = asyncHandler(async(req, res) =>{
    
 const reload = asyncHandler(async(req,res) => {
 const email = req
-console.log("here ->>>" + req)
 const user = await User.findOne({email})
 res.json({
   _id: user.id,
   name: user.name,
   email: user.email,
   token: user.token,
-  ElectionsVoted: user.ElectionsVoted
-
+  ElectionsVoted: user.ElectionsVoted,
+  role: user.role
           })
 
 })
@@ -173,6 +174,7 @@ const generateToken = (id) => {
     })
 
 }
+<<<<<<< HEAD
 const mongoURI = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 // Create mongo connection
@@ -209,6 +211,13 @@ console.log("hello")
 upload.single('file')
 res.json({file: req.file})
 })
+=======
+async function loadUserCollection() {
+  const client = await mongodb.MongoClient.connect
+  ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+  })
+>>>>>>> Testbranch
 
 async function loadUserCollection() {
   return db.db('panther-db').collection('users')
@@ -218,7 +227,6 @@ module.exports = {
     registerUser,
     loginUser,
     GetMe,
-    Upload,
     SubmitElection,
     reload,
     UpdateE

@@ -4,6 +4,7 @@ const dbConfig = require("../config/db2");
 const GridFSBucket = require("mongodb").GridFSBucket;
 //const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
+<<<<<<< HEAD
 //const mongodb = require('mongodb')
 //const mongoClient = new MongoClient(url);
 
@@ -20,6 +21,10 @@ MongoClient.connect(url, options, function(err, database){
     console.log('Connected!...maybe uploads.js pool')
 })
 
+=======
+const mongodb = require('mongodb');
+const mongoClient = new MongoClient(url);
+>>>>>>> Testbranch
 const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);
@@ -36,15 +41,18 @@ const uploadFiles = async (req, res) => {
     db.aggregate([
        { $addFields : {name: 1}}
     ])
+    db.close
     return res.send({
       message: "File has been uploaded.",
     });
+    
   } catch (error) {
     console.log(error);
     return res.send({
       message: "Error when trying upload image: ${error}",
     });
   }
+ 
 };
 const getListFiles = async (req, res) => {
     //console.log("hELLO")
@@ -71,7 +79,7 @@ const getListFiles = async (req, res) => {
       });
     });
     //console.log(fileInfos)
-
+    database.close
     return res.status(200).send(fileInfos);
   } catch (error) {
 
