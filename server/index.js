@@ -43,10 +43,7 @@ app.use((req, res, next) => {
 const elections = require('./routes/api/elections')
 app.use('/api/elections', elections)
 
-<<<<<<< HEAD
 //app.use('/api/goals', require('./routes/api/goalRoutes'))
-=======
->>>>>>> Testbranch
 app.use('/api/users', require('./routes/api/userRoutes'))
 app.use('/api/upload', require('./routes/api/PicRoute'))
 const Oauth = require('./routes/api/Oauth')

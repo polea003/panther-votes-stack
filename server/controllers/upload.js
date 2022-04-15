@@ -4,7 +4,6 @@ const dbConfig = require("../config/db2");
 const GridFSBucket = require("mongodb").GridFSBucket;
 //const url = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 const baseUrl = "http://localhost:8080/files/";
-<<<<<<< HEAD
 //const mongodb = require('mongodb')
 //const mongoClient = new MongoClient(url);
 
@@ -21,10 +20,6 @@ MongoClient.connect(url, options, function(err, database){
     console.log('Connected!...maybe uploads.js pool')
 })
 
-=======
-const mongodb = require('mongodb');
-const mongoClient = new MongoClient(url);
->>>>>>> Testbranch
 const uploadFiles = async (req, res) => {
   try {
     await upload(req, res);

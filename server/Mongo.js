@@ -1,4 +1,4 @@
-
+/* Needs to be uncommented to you Tyler's method
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 
@@ -31,3 +31,4 @@ module.exports = {
     establishConnection:establishConnection,
     getconnection:getconnection
 }
+*/

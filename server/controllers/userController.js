@@ -174,7 +174,6 @@ const generateToken = (id) => {
     })
 
 }
-<<<<<<< HEAD
 const mongoURI = 'mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 // Create mongo connection
@@ -211,13 +210,6 @@ console.log("hello")
 upload.single('file')
 res.json({file: req.file})
 })
-=======
-async function loadUserCollection() {
-  const client = await mongodb.MongoClient.connect
-  ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
-      useNewUrlParser: true
-  })
->>>>>>> Testbranch
 
 async function loadUserCollection() {
   return db.db('panther-db').collection('users')
