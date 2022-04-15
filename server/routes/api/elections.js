@@ -28,7 +28,7 @@ initializeDatabases().then(dbs => {
 var MongoClient = require('mongodb').MongoClient;
 var db;
 const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
-var options ={maxPoolSize: 10 }
+var options ={maxPoolSize: 100 }
 
 // Initialize connection once 
 MongoClient.connect(url, options, function(err, database){
@@ -36,7 +36,6 @@ MongoClient.connect(url, options, function(err, database){
 
     db = database;
     //coll = db.collection('elections');
-    poolSize = 10
     //app.listen(3000);
     //console.log('Listening on port 3000');
     console.log('Connected!...maybe election.js pool')
