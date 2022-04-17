@@ -1,8 +1,8 @@
 [programs.localnet]
-anchor_client = "3kqvXiSLfRyFth29psiivvWVk73vPGec1iu9hFehn87w"
+anchor_client = "ByeaD2hGgUnCM4wafG1MNDKmNSNssdM72CHFzNwd31h5"
 
 [programs.devnet]
-anchor_client = "3kqvXiSLfRyFth29psiivvWVk73vPGec1iu9hFehn87w"
+anchor_client = "ByeaD2hGgUnCM4wafG1MNDKmNSNssdM72CHFzNwd31h5"
 
 [registry]
 url = "https://anchor.projectserum.com"
