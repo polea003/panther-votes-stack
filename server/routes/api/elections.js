@@ -3,12 +3,49 @@ const mongodb = require('mongodb')
 const { ObjectId } = require('mongodb/lib/bson')
 const anchorClient = require('../../AnchorClient/tests/AnchorMethods.js')
 const router = express.Router()
-const Election = require('../../Models/electionModel')
+//const db = require('../../dbPool/dbs')
+//const db = require('../../config/dbPool')
+//const appjs = require('../../app')
+//console.log(appjs)
+//console.log(req.app.locals.dbs)
+//const workPlease = appjs.dbs 
+//const connectDB = require('../../config/db')
+/*const app = express()
 
-// const Election = await loadElectionCollection()
+const initializeDatabases = require('../../dbPool/dbs')
+const routes = require('../../dbPool/routes')
+
+initializeDatabases().then(dbs => {
+  // Initialize the application once database connections are ready.
+  routes(app, dbs).listen(3000, () => console.log('Listening on port 3000'))
+}).catch(err => {
+  console.error('Failed to make all database connections!')
+  console.error(err)
+  process.exit(1)
+})*/
+
+//http://mongodb.github.io/node-mongodb-native/driver-articles/mongoclient.html#mongoclient-connect
+var MongoClient = require('mongodb').MongoClient;
+var db;
+const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
+var options ={maxPoolSize: 100 }
+
+// Initialize connection once 
+MongoClient.connect(url, options, function(err, database){
+  if(err) throw err;
+
+    db = database;
+    //coll = db.collection('elections');
+    //app.listen(3000);
+    //console.log('Listening on port 3000');
+    console.log('Connected!...maybe election.js pool')
+})
+//https://blog.mlab.com/2013/11/deep-dive-into-connection-pooling/
+
 //Get
 router.get('/', async (req, res) => {
-    res.send(await Election.find({keys: {$exists: true}}))
+    const elections = await loadElectionsCollection()
+    res.send(await elections.find({keys: {$exists: true}}).toArray())
 })
 
 //Get all votes from blockchain
@@ -17,18 +54,20 @@ router.get('/solana/', async (req, res) => {
 })
 
 router.get('/solana/:electionId', async (req, res) => {
-    const election = await Election.findOne({_id: new mongodb.ObjectId(req.params.electionId)})
+    const elections = await loadElectionsCollection()
+    const election = await elections.findOne({_id: new mongodb.ObjectId(req.params.electionId)})
     res.send(await anchorClient.getVotes(election.keys))
 })
 
 
 router.put('/:electionid/:Canadent_Number/:userid', async (req, res) => {
-    const election = await Election.findOne({ _id: new mongodb.ObjectId(req.params.electionid)})
+    const elections = await loadElectionsCollection()
+    const election = await elections.findOne({ _id: new mongodb.ObjectId(req.params.electionid)})
     console.log(req.params.Canadent_Number)
     number = req.params.Canadent_Number
     console.log(req.params.userid)
     await anchorClient.addVote(parseInt(number), req.params.userid, election.keys)
-    await Election.updateOne( {_id :  new mongodb.ObjectId(req.params.electionid)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
+    await elections.updateOne( {_id :  new mongodb.ObjectId(req.params.electionid)},{$inc: { [`Vote.${number - 1}.value`]  : 1 }}, {upsert: true})
     res.status(200).send()
 })
 
@@ -36,9 +75,10 @@ router.put('/:electionid/:Canadent_Number/:userid', async (req, res) => {
 
 //Add
 router.post('/', async (req, res) => {
+    const elections = await loadElectionsCollection()
     const keypairs = await loadKeypairCollection()
     const keypair = await keypairs.findOne({ inUse: false })
-    await Election.insertOne({
+    await elections.insertOne({
         text: req.body.text,
         club: req.body.club,
         Candidate1FirstName: req.body.Candidate1FirstName,
@@ -68,26 +108,32 @@ router.post('/', async (req, res) => {
 
 //Delete
 router.delete('/:id', async (req, res) => {
-    await Election.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
+    const elections = await loadElectionsCollection()
+    await elections.deleteOne({_id: new mongodb.ObjectId(req.params.id)})
     res.status(200).send()
 })
 
-async function loadElectionCollection() {
-    const client = await mongodb.MongoClient.connect
-    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+async function loadElectionsCollection() {
+    /*connectDB('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
-    })
+    })*/
+   /*const client = await mongodb.MongoClient.connect
+    ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority', {
+        useNewUrlParser: true
+    })*/
 
-    return client.db('panther-db').collection('Election')
+    return db.db('panther-db').collection('elections')
 }
 
 async function loadKeypairCollection() {
-    const client = await mongodb.MongoClient.connect
+    /*const client = await mongodb.MongoClient.connect
     ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
         useNewUrlParser: true
-    })
-  
-    return client.db('panther-db').collection('keypairs')
+    })*/
+  /*connectDB('mongodb+srv://panther123:<password>@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+    useNewUrlParser: true
+})*/
+    return db.db('panther-db').collection('keypairs')
   }
 
 module.exports = router
