@@ -15,19 +15,7 @@ const crypto = require('crypto');
 const { readSync } = require('fs')
 const { getMaxListeners } = require('process')
 
-//Local Pool
-var MongoClient = require('mongodb').MongoClient;
-var db;
-const url = "mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/panther-db?retryWrites=true&w=majority"
-var options ={maxPoolSize: 100}
 
-// Initialize connection once 
-MongoClient.connect(url, options, function(err, database){
-  if(err) throw err;
-
-    db = database;
-    console.log('Connected!...maybe userController.js pool')
-})
 
 //router.put('/:Uid/:Eid', async (req, res) => {
  // const user = await User.findOne({Uid})
@@ -209,9 +197,13 @@ console.log("hello")
 upload.single('file')
 res.json({file: req.file})
 })
-
 async function loadUserCollection() {
-  return db.db('panther-db').collection('users')
+  const client = await mongodb.MongoClient.connect
+  ('mongodb+srv://panther123:panther123@panther-db.gfe61.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', {
+      useNewUrlParser: true
+  })
+
+  return client.db('panther-db').collection('users')
 }
 
 module.exports = {
