@@ -1,5 +1,8 @@
 STEPS FOR A FRESH SPIN UP OF A NEW VOTING DAPP:
 
+to create a new Solana keypair if you max out daily airdrops:
+$ solana-keygen new
+
 *** see server/AnchorClient/createSolanaAccount.sh for streamlined process ***
 
 1. run createKeypair.js in anchor client to create base account keypair
