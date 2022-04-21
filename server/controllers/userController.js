@@ -53,7 +53,7 @@ const UpdateE = asyncHandler(async(req,res) => {
 //@access Public
 const registerUser =  asyncHandler(async(req, res) =>{
     
-    const {name, email, password, ElectionsVoted} = req.body
+    const {name, email, password, ElectionsVoted, role} = req.body
 
     //console.log(req.body)
     //console.log(ElectionsVoted)
@@ -81,7 +81,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
         name,
         email,
         password: hashedPassword,
-        ElectionsVoted
+        ElectionsVoted,
+        role
         
     })
 
