@@ -82,6 +82,7 @@ const registerUser =  asyncHandler(async(req, res) =>{
         email,
         password: hashedPassword,
         ElectionsVoted
+        
     })
 
     if(user){
@@ -89,7 +90,8 @@ const registerUser =  asyncHandler(async(req, res) =>{
             _id: user.id,
             name: user.name,
             email: user.email,
-            token: generateToken(user._id)
+            token: generateToken(user._id),
+            role: user.role
         })}
     else{
         res.status(400)
@@ -115,8 +117,8 @@ const loginUser = asyncHandler(async(req, res) =>{
     name: user.name,
     email: user.email,
     token: generateToken(user._id),
-    ElectionsVoted: user.ElectionsVoted
-
+    ElectionsVoted: user.ElectionsVoted,
+    role: user.role
             })
     }
     else{
@@ -134,8 +136,8 @@ res.json({
   name: user.name,
   email: user.email,
   token: user.token,
-  ElectionsVoted: user.ElectionsVoted
-
+  ElectionsVoted: user.ElectionsVoted,
+  role: user.role
           })
 
 })
